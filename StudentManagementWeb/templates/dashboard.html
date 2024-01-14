@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='dashboard.css') }}"
+    />
+  </head>
+  <body>
+    <h1>Dashboard</h1>
+    {% if is_user_logged_in %}
+    <p>Welcome, {{ session['username'] }}!</p>
+    <table border="1">
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th>Address</th>
+        <th>Update</th>
+        <th>Remove</th>
+      </tr>
+      {% for student in students %}
+      <tr>
+        <td>{{ student.id }}</td>
+        <td>{{ student.name }}</td>
+        <td>{{ student.phone }}</td>
+        <td>{{ student.email }}</td>
+        <td>{{ student.address }}</td>
+        <td>
+          <a href="{{ url_for('update_student_form', student_id=student.id) }}"
+            >Update</a
+          >
+        </td>
+        <td>
+          <a href="{{ url_for('remove_student', student_id=student.id) }}"
+            >Remove</a
+          >
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+    <br />
+    <a class="button" href="{{ url_for('add_student_form') }}">Add Student</a>
+    <br />
+    <a class="button" href="{{ url_for('logout') }}">Logout</a>
+    {% else %}
+    <p>Please login to access the dashboard.</p>
+    <a href="{{ url_for('index') }}">Login</a>
+    {% endif %}
+  </body>
+</html>
